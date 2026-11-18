@@ -148,6 +148,8 @@ NOTE: u should take the hash till index.php file which as shwon in the screensho
 ##
 # 22 - i used the command "sudo /bin/bash" this spawns me a root shell.  then i looked for user.txt file which was sitting in diego directory, and the root file which was in the root directory. 
 <img width="1871" height="661" alt="image" src="https://github.com/user-attachments/assets/f9a83241-54f2-437e-997a-2474d9e00831" />
+<img width="1866" height="642" alt="Screenshot 2026-11-18 134848" src="https://github.com/user-attachments/assets/81ef9af9-a5ec-486e-b5e6-175f90b7261d" />
+
 
 
 

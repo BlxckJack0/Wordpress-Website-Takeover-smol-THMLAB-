@@ -146,11 +146,15 @@ NOTE: u should take the hash till index.php file which as shwon in the screensho
 
 ##
 # 21 - i switch user to xavi using "su xavi" then ran sudo -l to see what are things i can do and boom we can do everything 
-<img width="1857" height="641" alt="image" src="https://github.com/user-attachments/assets/204b2684-c294-43f0-80c5-9c4b1160d341" />
+<img width="1867" height="204" alt="Screenshot 2026-11-18 021320" src="https://github.com/user-attachments/assets/56838984-4aea-4b0a-8565-7dac47622f5f" />
+
 ##
 # 22 - i used the command "sudo /bin/bash" this spawns me a root shell.  then i looked for user.txt file which was sitting in diego directory, and the root file which was in the root directory. 
 <img width="1871" height="661" alt="image" src="https://github.com/user-attachments/assets/f9a83241-54f2-437e-997a-2474d9e00831" />
 <img width="1866" height="642" alt="Screenshot 2026-11-18 134848" src="https://github.com/user-attachments/assets/81ef9af9-a5ec-486e-b5e6-175f90b7261d" />
+
+
+## Make Sure to Star the repo if you understood the writeup.
 
 
 

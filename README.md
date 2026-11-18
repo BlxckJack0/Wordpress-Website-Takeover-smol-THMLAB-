@@ -7,8 +7,9 @@ We Start with a basic nmap scan, Then a version Scan to see if there are any out
 <img width="1862" height="647" alt="Screenshot 2026-11-18 005018" src="https://github.com/user-attachments/assets/ededd05e-104a-4141-9618-56ad40ce7f36" />
 
 <img width="1872" height="772" alt="Screenshot 2026-11-18 005144" src="https://github.com/user-attachments/assets/fbf58e38-3a6e-4d90-9e0b-37588a5c71e7" />
+##
 
-# 2 - Interesting we find a website running on port 80 and ssh on 22.Its Runnign wordpress version 6.7.1.I started looking for Known exploits 
+# 2 - Intersting Its Running a wordpress website version 6.7.1.I started looking for Known exploits 
 <img width="1872" height="407" alt="Screenshot 2026-11-18 005214" src="https://github.com/user-attachments/assets/bbc6cc41-6d09-4974-82d3-e637d82ee648" />
 
 

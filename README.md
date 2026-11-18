@@ -71,7 +71,8 @@ http://localhost/wp-content/plugins/jsmol2wp/php/jsmol.php
 
 # 8 - i decoded the base64 encoded line and got this, it is hinting for a cmd parameter abuse .
 <img width="1862" height="207" alt="Screenshot 2026-11-18 010256" src="https://github.com/user-attachments/assets/4bf4671d-984e-4ed5-b821-03724fe699d0" />
-##
+ ##
+ 
 # 9 - I injected ?cmd=id and boom we have code execution is on 
 <img width="1917" height="842" alt="Screenshot 2026-11-18 010433" src="https://github.com/user-attachments/assets/0aa4afd5-8332-4982-a529-72546d8b3b4d" />
 ##

